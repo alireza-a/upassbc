@@ -1,3 +1,18 @@
+# upassbc automator
+The following is what I think happens when you try to log into your upassbc page.
+
+1. select simon fraser university
+
+2. redirect to SFU login page
+
+3. SFU automatically authorizes upassbc app
+
+4. redirect to upass bc callback page with access token
+
+After this point the upassbc page can access your information by providing the token to sfu website.
+
+This script follows this pass to reload your Compass card every month.
+
 # Getting Started
 
 ## Requirements
@@ -46,17 +61,17 @@ sudo launchctl load -w ~/Library/LaunchAgents/upassbc_launchagent.plist
 ```
 
 ### On windows
-
+Yet to be tested.
 
 ## change permission for the folder
+change permissions on the file containing your username and password.
 ```sh
 chmod 700 -R /path_to_direcory
 ```
 
 # Notes
-The automator.rb script only makes a request on your behalf to upassbc website to register for all the possible months availible.
-To make sure this request succeeds, register the Cron job to run multiple time during a month.
-This ensures the automator will succeed with high probability.
+The automator.rb script only makes a request on your behalf to upassbc website to register for all the possible months available.
+To increase the probability of successful update, the setup configures your system to execute the script multiple times.
 
 The following docs were used in developing this automator
 
