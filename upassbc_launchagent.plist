@@ -6,10 +6,9 @@
     <string>launchagent.upassbc</string>
     <key>ProgramArguments</key>
     <array>
-		<string>
-			Run for ever
-		</string>
+		<string>{DirName}/upassbc/runAutomator.sh</string>
     </array>
+    <key>RunAtLoad</key><true/>s
     <key>StartCalendarInterval</key>
 	<array>
 		<dict>

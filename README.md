@@ -44,6 +44,12 @@ run the following to run automator.rb every day of every month at 3:30pm
 30 15 * * * ruby /path_to_directory/upassbc/automator.rb
 ```
 ### On OS X
+
+Edit the runAutomator.sh file -> Replace <DirName> with the full path to the upassbc folder
+Edit the upassbc_launchagent.plist file -> Replace {DirName} inside ProgramArguments key with the full path to the runAutomator.sh file
+
+MAKE SURE THE FULL PATH IS ACCESSIBLE BY THE ROOT.
+
 move the launch agent to ~/Library/LaunchAgents to run as a user agent
 ```sh
 cp upassbc_launchagent.plist ~/Library/LaunchAgents/
