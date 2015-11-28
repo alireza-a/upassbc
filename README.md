@@ -75,10 +75,10 @@ sudo launchctl load -w ~/Library/LaunchAgents/upassbc_launchagent.plist
 
 The script will be run once as soon as the Launch Agent is loaded. If you don't see a logfile in the directory, something has gone wrong. If that happens try logging in as root and manually running runAutomator.sh file
 
-### On windows
+### On Windows
 IMPORTANT - There are issues with using Mechanize to open secure SSL URLs. To bypass this, SSL verification has been set to none. This shouldn't be a problem as the URLs are hardcoded in the script but it's important to relay this information.
 
-If you recieve error while installing bundles such as " gem requires installed build tools", follow the instructions below as explained by [Massimo Fazzolari](http://stackoverflow.com/users/216685/massimo-fazzolari) on {Stack Exchange](http://stackoverflow.com/questions/8100891/the-json-native-gem-requires-installed-build-tools)
+If you recieve error while installing bundles such as " gem requires installed build tools", follow the instructions below as explained by [Massimo Fazzolari](http://stackoverflow.com/users/216685/massimo-fazzolari) on [Stack Exchange](http://stackoverflow.com/questions/8100891/the-json-native-gem-requires-installed-build-tools)
 ```sh
 Download DevKit file from rubyinstaller.org for your particular ruby version
 Extract DevKit to path C:\Ruby<Ver>\DevKit
@@ -99,7 +99,7 @@ Windows scheduler can be used to schedule the running of the script. To set up s
 1) Google how to create a new task usin task scheduler.
 2) When setting an action for the task, set the following:
 	Program/script -> runAutomatorWindows.bat
-	Start in (optional) -> <Directory of the script>
+	Start in (optional) -> Directory of the script
 
 ## change permission for the folder
 change permissions on the file containing your username and password.
