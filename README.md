@@ -27,6 +27,7 @@ Run the following command in terminal to install all the dependencies (If you do
 ```sh
 bundle install
 ```
+Windows users see Windows section below
 
 ## Save your username and password
 enter your sfu computing id and password instead of the place holders in the auth.json file
@@ -74,8 +75,31 @@ sudo launchctl load -w ~/Library/LaunchAgents/upassbc_launchagent.plist
 
 The script will be run once as soon as the Launch Agent is loaded. If you don't see a logfile in the directory, something has gone wrong. If that happens try logging in as root and manually running runAutomator.sh file
 
-### On windows
-Yet to be tested.
+### On Windows
+IMPORTANT - There are issues with using Mechanize to open secure SSL URLs. To bypass this, SSL verification has been set to none. This shouldn't be a problem as the URLs are hardcoded in the script but it's important to relay this information.
+
+If you recieve error while installing bundles such as " gem requires installed build tools", follow the instructions below as explained by [Massimo Fazzolari](http://stackoverflow.com/users/216685/massimo-fazzolari) on [Stack Exchange](http://stackoverflow.com/questions/8100891/the-json-native-gem-requires-installed-build-tools)
+```sh
+Download DevKit file from rubyinstaller.org for your particular ruby version
+Extract DevKit to path C:\Ruby<Ver>\DevKit
+Run cd C:\Ruby<Ver>\DevKit
+Run ruby dk.rb init
+Run ruby dk.rb review
+Run ruby dk.rb install
+```
+
+Nokogiri doesn't support Ruby 2.2 and up on Windows yet. To make it work, download [Nokogiri 1.6.6.2 (x64)](https://github.com/paulgrant999/ruby-2.2.2-nokogiri-1.6.6.2-x86-x64-mingw32.gem/raw/master/nokogiri-1.6.6.2-x64-mingw32.gem) or [Nokogiri 1.6.6.2 (x86)](https://github.com/paulgrant999/ruby-2.2.2-nokogiri-1.6.6.2-x86-x64-mingw32.gem/raw/master/nokogiri-1.6.6.2-x86-mingw32.gem) and do the following 
+```sh
+gem uninstall nokogiri
+gem install --local <Nokogiri Download Directory>
+```
+
+Windows scheduler can be used to schedule the running of the script. To set up scheduler, do the following steps:
+
+1) Google how to create a new task usin task scheduler.
+2) When setting an action for the task, set the following:
+	Program/script -> runAutomatorWindows.bat
+	Start in (optional) -> Directory of the script
 
 ## change permission for the folder
 change permissions on the file containing your username and password.

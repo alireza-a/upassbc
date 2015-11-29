@@ -3,6 +3,7 @@ require 'logger'
 require 'json'
 require 'open-uri'
 require 'mechanize'
+require 'rbconfig'
 
 require_relative './helpers/connection.rb'
 require_relative './helpers/new_month.rb'
@@ -27,6 +28,13 @@ end
 # make a request for all the eligible months
 # to improve the readibility and logging, the following code is flattened
 agent = Mechanize.new
+
+# There are issues with opening SSL URLs with Mechanize on Windows
+# Workaround is to not verify URLs thereby bypassing certificates
+# The following lines check if the host is windows and set the http mode to verify none
+if RbConfig::CONFIG["host_os"] =~ /mingw|mswin/
+  agent.agent.http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+end
 
 # fetch the upassbc website
 login_page = agent.get('https://upassbc.translink.ca')

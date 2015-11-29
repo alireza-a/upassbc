@@ -1,0 +1,1 @@
+ruby automator.rb
