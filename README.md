@@ -1,20 +1,19 @@
-# upassbc automator
-The following is what I think happens when you try to log into your upassbc page.
+# UpassBC Automator
+The following is what I think happens when you try to log into your UpassBC profile.
 
-1. select simon fraser university
+1. Select Simon Fraser University
 
-2. redirect to SFU login page
+2. Redirect to SFU login page
 
-3. SFU automatically authorizes upassbc app
+3. SFU automatically authorizes UpassBC app
 
-4. redirect to upass bc callback page with access token
+4. Redirect to UpassBC callback page with access token
 
-After this point the upassbc page can access your information by providing the token to sfu website.
+After this point the UpassBC page can access your information by providing the token to SFU CAS.
 
-This script follows this pass to reload your Compass card every month.
+This script follows this path to reload your Compass card every month.
 
 # Getting Started
-
 ## Requirements
 For this automator to work you need to have the following installed:
 
@@ -23,14 +22,15 @@ For this automator to work you need to have the following installed:
 2. RubyGems (Comes with Ruby by default)
 
 ## Install the dependencies
-Run the following command in terminal to install all the dependencies (If you do not have bundler installed run: gem install bundler):
+Run the following command in terminal or CMD to install all the dependencies (If you do not have bundler installed run: gem install bundler):
 ```sh
+cd ~/path_to_directory/upassbc
 bundle install
 ```
-Windows users see Windows section below
+*Windows users see Windows section below
 
 ## Save your username and password
-enter your sfu computing id and password instead of the place holders in the auth.json file
+Enter your SFU Computing ID and Password instead of the place holders in the auth.json file.
 ```json
 {
 	"username": "davida",
@@ -40,24 +40,31 @@ enter your sfu computing id and password instead of the place holders in the aut
 
 ## Register the script to run periodically
 ### On linux
-run the following to run automator.rb every day of every month at 3:30pm
+Run the following to schedule a Cron job
 ```sh
+crontab -e
+```
+When the editor opens copy the following line and save it. This would schedule the script to run at 3:30pm everyday
+```txt
 30 15 * * * ruby /path_to_directory/upassbc/automator.rb
 ```
 ### On OS X
 
 Edit the runAutomator.sh file -> Replace <DirName> with the full path to the upassbc folder
+
 Edit the upassbc_launchagent.plist file -> Replace {DirName} inside ProgramArguments key with the full path to the runAutomator.sh file
 
-MAKE SURE THE FULL PATH IS ACCESSIBLE BY THE ROOT.
+Make sure the full path is accessible by the root.
+Do NOT use the '~/Desktop/...' but use the full path '/Users/{username}/Desktop/...'
 
-runAutomator.sh must be owned by root
+
+runAutomator.sh must be owned by root:
 ```sh
 sudo chown root ./runAutomator.sh
 sudo chmod 755 ./runAutomator.sh
 ```
 
-move the launch agent to ~/Library/LaunchAgents to run as a user agent
+Move the launch agent to ~/Library/LaunchAgents to run as a User Agent:
 ```sh
 cp upassbc_launchagent.plist ~/Library/LaunchAgents/
 ```
@@ -68,7 +75,7 @@ As mentioned on [Stack Exchange](http://superuser.com/questions/793872/can-t-lau
 sudo chmod 600 ~/Library/LaunchAgents/upassbc_launchagent.plist
 sudo chown root ~/Library/LaunchAgents/upassbc_launchagent.plist
 ```
-register the launch file
+Register the launch file:
 ```sh
 sudo launchctl load -w ~/Library/LaunchAgents/upassbc_launchagent.plist
 ```
@@ -96,20 +103,18 @@ gem install --local <Nokogiri Download Directory>
 
 Windows scheduler can be used to schedule the running of the script. To set up scheduler, do the following steps:
 
-1) Google how to create a new task usin task scheduler.
-2) When setting an action for the task, set the following:
+1. Google how to create a new task using task scheduler.
+
+2. When setting an action for the task, set the following:
+
+```txt
 	Program/script -> runAutomatorWindows.bat
 	Start in (optional) -> Directory of the script
-
-## change permission for the folder
-change permissions on the file containing your username and password.
-```sh
-chmod 700 -R /path_to_direcory
 ```
 
 # Notes
 The automator.rb script only makes a request on your behalf to upassbc website to register for all the possible months available.
-To increase the probability of successful update, the setup configures your system to execute the script multiple times.
+To increase the probability of successful update, this setup configures your system to execute the script multiple times.
 
 The following docs were used in developing this automator
 
