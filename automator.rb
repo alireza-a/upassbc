@@ -21,7 +21,7 @@ auth_hash = JSON.parse(auth)
 # try accessing google ten times over the next three hours
 unless can_be_reached? 10, 'http://www.google.com/', 1800
   # exit after ten trials
-  logger.warn 'failed to stablish a network connection'
+  logger.warn 'failed to establish a network connection'
   exit
 end
 
