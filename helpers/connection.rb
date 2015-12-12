@@ -2,7 +2,7 @@
 # surpasses any error raised in the process and returns false
 def accessable?(url)
   open(url)
-rescue OpenURI::HTTPError
+rescue StandardError
   false
 end
 
