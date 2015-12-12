@@ -8,11 +8,13 @@ require 'rbconfig'
 require_relative './helpers/connection.rb'
 require_relative './helpers/new_month.rb'
 
+logfile = 'logfile.log'
+
 # only continue execution if form has not been submitted for this month
-exit if File.exist?('logfile.log') && !new_month?
+exit if File.exist?(logfile) && !new_month?(logfile)
 # create a logger to direct the data to logfile
-logger = Logger.new('logfile.log')
-# read the usrename and password from auth.json file
+logger = Logger.new(logfile)
+# read the username and password from auth.json file
 auth = File.read('auth.json')
 auth_hash = JSON.parse(auth)
 
