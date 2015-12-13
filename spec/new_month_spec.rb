@@ -38,7 +38,18 @@ describe "#new_month?" do
     end
   end
 
-  after(:each) do 
+  context "when have not enrolled for upass in the current month" do
+    before(:each) do
+      current_month = Time.now
+      write_to_file current_month, "not available yet"
+    end
+
+    it "returns true" do
+      is_new_month? logfile.path, true
+    end
+  end
+
+  after(:each) do
     logfile.close!
   end
 end
