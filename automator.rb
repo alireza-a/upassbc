@@ -36,15 +36,16 @@ if RbConfig::CONFIG["host_os"] =~ /mingw|mswin/
   agent.agent.http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 end
 
+
+translink_base_url = 'https://upassbc.translink.ca'
+
 # try accessing translink site for the next three hours if 
 # translink site is down
-unless can_be_reached? 10, 'https://upassbc.translink.ca', 1080
+unless can_be_reached? 10, translink_base_url, 1080
   # exit after ten trials
   logger.warn 'translink site is unreachable because it is down'
   exit
 end
-
-translink_base_url = 'https://upassbc.translink.ca'
 
 # fetch the upassbc website
 login_page = agent.get(translink_base_url)
