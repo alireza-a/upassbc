@@ -19,7 +19,7 @@ auth_hash = JSON.parse(auth)
 # check for internet connection
 # quit if unable to establish connection after trying hard
 # try accessing google ten times over the next three hours
-unless can_be_reached? 10, 'http://www.google.com/', 1800
+unless can_be_reached? 10, 'http://www.google.com/', 1080
   # exit after ten trials
   logger.warn 'failed to establish a network connection'
   exit
@@ -36,9 +36,19 @@ if RbConfig::CONFIG["host_os"] =~ /mingw|mswin/
   agent.agent.http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 end
 
+# try accessing translink site for the next three hours if 
+# translink site is down
+unless can_be_reached? 10, 'https://upassbc.translink.ca', 1080
+  # exit after ten trials
+  logger.warn 'translink site is unreachable because it is down'
+  exit
+end
+
+translink_base_url = 'https://upassbc.translink.ca'
+
 # fetch the upassbc website
-login_page = agent.get('https://upassbc.translink.ca')
-unless %r{https://upassbc.translink.ca}.match(login_page.uri.to_s)
+login_page = agent.get(translink_base_url)
+unless %r{translink_base_url}.match(login_page.uri.to_s)
   logger.warn 'cannot reach the upassbc website'
   exit
 end
