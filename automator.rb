@@ -8,11 +8,13 @@ require 'rbconfig'
 require_relative './helpers/connection.rb'
 require_relative './helpers/new_month.rb'
 
+logfile = 'logfile.log'
+
 # only continue execution if form has not been submitted for this month
-exit if File.exist?('logfile.log') && !new_month?
+exit if File.exist?(logfile) && !new_month?(logfile)
 # create a logger to direct the data to logfile
-logger = Logger.new('logfile.log')
-# read the usrename and password from auth.json file
+logger = Logger.new(logfile)
+# read the username and password from auth.json file
 auth = File.read('auth.json')
 auth_hash = JSON.parse(auth)
 
@@ -76,21 +78,23 @@ end
 
 # requests the next month upass
 next_month = 0
-response = my_upassbc_page.form_with(action: '/fs/Eligibility/Request') do |request_form|
-  if request_form.checkbox_with(name: /^Eligibility\[.*\].Selected$/)
+eligibility_request_action = '/fs/Eligibility/Request'
+is_eligible = lambda { |form| return form.checkbox_with(name: /^Eligibility\[.*\].Selected$/) }
+response = my_upassbc_page.form_with(action: eligibility_request_action) do |request_form|
+  if is_eligible.call(request_form)
     next_month = 1
     request_form.checkbox_with(name: /^Eligibility\[.*\].Selected$/).check
   end
 end.submit
 # log the result
 if next_month > 0
-  response.form_with(action: '/fs/Eligibility/Request') do |request_form|
-    if request_form.checkbox_with(name: /^Eligibility\[.*\].Selected$/)
+  response.form_with(action: eligibility_request_action) do |request_form|
+    if is_eligible.call(request_form)
       logger.warn 'request failed'
     else
       logger.info 'success'
     end
   end
 else
-  logger.info 'not availibale yet'
+  logger.info 'not available yet'
 end
