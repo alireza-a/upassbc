@@ -79,8 +79,9 @@ end
 # requests the next month upass
 next_month = 0
 eligibility_request_action = '/fs/Eligibility/Request'
+is_eligible = lambda { |form| return form.checkbox_with(name: /^Eligibility\[.*\].Selected$/) }
 response = my_upassbc_page.form_with(action: eligibility_request_action) do |request_form|
-  if request_form.checkbox_with(name: /^Eligibility\[.*\].Selected$/)
+  if is_eligible.call(request_form)
     next_month = 1
     request_form.checkbox_with(name: /^Eligibility\[.*\].Selected$/).check
   end
@@ -88,7 +89,7 @@ end.submit
 # log the result
 if next_month > 0
   response.form_with(action: eligibility_request_action) do |request_form|
-    if request_form.checkbox_with(name: /^Eligibility\[.*\].Selected$/)
+    if is_eligible.call(request_form)
       logger.warn 'request failed'
     else
       logger.info 'success'
