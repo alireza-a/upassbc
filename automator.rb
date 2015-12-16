@@ -78,7 +78,8 @@ end
 
 # requests the next month upass
 next_month = 0
-response = my_upassbc_page.form_with(action: '/fs/Eligibility/Request') do |request_form|
+eligibility_request_action = '/fs/Eligibility/Request'
+response = my_upassbc_page.form_with(action: eligibility_request_action) do |request_form|
   if request_form.checkbox_with(name: /^Eligibility\[.*\].Selected$/)
     next_month = 1
     request_form.checkbox_with(name: /^Eligibility\[.*\].Selected$/).check
@@ -86,7 +87,7 @@ response = my_upassbc_page.form_with(action: '/fs/Eligibility/Request') do |requ
 end.submit
 # log the result
 if next_month > 0
-  response.form_with(action: '/fs/Eligibility/Request') do |request_form|
+  response.form_with(action: eligibility_request_action) do |request_form|
     if request_form.checkbox_with(name: /^Eligibility\[.*\].Selected$/)
       logger.warn 'request failed'
     else
@@ -94,5 +95,5 @@ if next_month > 0
     end
   end
 else
-  logger.info 'not availibale yet'
+  logger.info 'not available yet'
 end
