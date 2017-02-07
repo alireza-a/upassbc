@@ -39,7 +39,7 @@ end
 # fetch the upassbc website
 login_page = agent.get('https://upassbc.translink.ca')
 unless %r{https://upassbc.translink.ca}.match(login_page.uri.to_s)
-  logger.warn 'cannot reach the upassbc website'
+  logger.warn 'Cannot reach the upassbc website'
   exit
 end
 
@@ -49,7 +49,7 @@ sfu_login_page = login_page.form_with(action: '/') do |select_school_form|
 end.submit
 # makes sure the submission redirects to cas for login
 unless %r{https://cas.sfu.ca/cas/login}.match(sfu_login_page.uri.to_s)
-  logger.warn 'something about the upass bc select school form has changed'
+  logger.warn 'Something about the UpassBC Select School form has changed'
   exit
 end
 
@@ -60,7 +60,7 @@ hidden = sfu_login_page.form_with(name: 'login') do |login_form|
 end.submit
 # makes sure the submission is successful and doesn't redirects back to cas page
 unless %r{https://idp.sfu.ca/idp/profile/SAML2}.match(hidden.uri.to_s)
-  logger.warn 'login failed! please check your username and password'
+  logger.warn 'Login failed! Please check your username and password'
   exit
 end
 
@@ -70,7 +70,7 @@ hidden = hidden.forms.first.submit
 my_upassbc_page = hidden.forms.first.submit
 # make sure you are logged into upassbc website
 unless %r{https://upassbc.translink.ca}.match(my_upassbc_page.uri.to_s)
-  logger.warn 'something has changed in sfu authentication process'
+  logger.warn 'Something has changed in SFU authentication process'
   exit
 end
 
@@ -86,11 +86,11 @@ end.submit
 if next_month > 0
   response.form_with(action: '/fs/Eligibility/Request') do |request_form|
     if request_form.checkbox_with(name: /^Eligibility\[.*\].Selected$/)
-      logger.warn 'request failed'
+      logger.warn 'Request failed'
     else
-      logger.info 'success'
+      logger.info 'Success'
     end
   end
 else
-  logger.info 'not availibale yet'
+  logger.info 'Not available yet'
 end
